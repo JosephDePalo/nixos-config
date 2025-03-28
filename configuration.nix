@@ -1,16 +1,10 @@
 { config, lib, pkgs, ... }:
-let
-  home-manager = builtins.fetchTarball {
-    url = "https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz";
-  };
-in
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   imports =
     [
       ./hardware-configuration.nix
-      (import "${home-manager}/nixos")
     ];
 
   boot.loader = {
@@ -46,7 +40,10 @@ in
     };
     displayManager.lightdm = {
       enable = true;
-      background = /home/joe/.wallpaper;
+      background = ./Wallpaper;
+      greeters.gtk.enable = true;
+      greeters.gtk.theme.name = "Obsidian-2";
+      greeters.gtk.theme.package = pkgs.theme-obsidian2;
     };
     xkb.layout = "us";
   };
@@ -62,76 +59,10 @@ in
   # Define Users
   users.users.joe = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "video" ];
+    extraGroups = [ "wheel" "audio" "video" "networkmanager" ];
     ignoreShellProgramCheck = true;
     shell = pkgs.zsh;
     initialPassword = "password";
-  };
-
-
-  home-manager.users.joe = { pkgs, ... }: {
-    nixpkgs.config.allowUnfree = true;
-
-    home.packages = with pkgs; [
-      keepassxc
-      spotify
-      obsidian
-      btop
-      bat
-      eza
-      procs
-      ripgrep
-      flameshot
-    ];
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
-      initExtra = ''
-        set -o vi
-      '';
-      shellAliases = {
-        nix_build = "sudo nixos-rebuild switch";
-      };
-      localVariables = {
-        EDITOR = "vim";
-      };
-    };
-    programs.kitty = {
-      enable = true;
-      font.name = "JetBrainsMono";
-      extraConfig = ''
-        include /home/joe/.cache/wal/colors-kitty.conf
-        background_opacity 0.95
-      '';
-    };
-    programs.starship.enable = true;
-    programs.zathura.enable = true;
-    programs.zathura.extraConfig = "include /home/joe/.cache/wal/zathurarc";
-    programs.vscode.enable = true;
-    programs.ranger = {
-      enable = true;
-      extraConfig = ''
-        set preview_images true
-        set preview_images_method kitty
-      '';
-    };
-    home.stateVersion = "24.11";
-
-    services.dunst = {
-      enable = true;
-      configFile = /home/joe/.cache/wal/dunstrc;
-    };
-
-    programs.rofi = {
-      enable = true;
-      theme = /home/joe/.cache/wal/colors-rofi-dark.rasi;
-    };
-
-    xdg.configFile."qtile/config.py".source = /home/joe/Configs/qtile/config.py;
-    services.polybar.config = /home/joe/Configs/polybar/config.ini;
-
   };
 
   # Configure packages.
@@ -150,8 +81,9 @@ in
     };
   };
 
-  programs.firefox.enable = true;
   programs.light.enable = true; # Maybe enable brightnessKeys?
+  programs.dconf.enable = true;
+  programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
     # CLI Uitilities
@@ -166,9 +98,11 @@ in
     libnotify
     feh
     # UI/UX
-    polybar
+    (polybar.override { pulseSupport = true; })
     pywal
     rofi
+    theme-obsidian2
+    xclip
     # Services
     udiskie
     usbutils
@@ -181,7 +115,6 @@ in
   ];  
 
   # Miscellaneous
-  system.copySystemConfiguration = true; # Backup System Configuration
   system.stateVersion = "24.11"; # DO NOT MODIFY
 
 }

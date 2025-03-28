@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-dir="$HOME/Configs/rofi/"
+dir=$(dirname $(realpath $0))
 
 ## Run
 rofi \

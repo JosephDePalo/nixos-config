@@ -1,0 +1,23 @@
+" Special
+let wallpaper  = "/home/joe/Configs/Wallpaper"
+let background = "#0A0101"
+let foreground = "#ddd2cb"
+let cursor     = "#ddd2cb"
+
+" Colors
+let color0  = "#0A0101"
+let color1  = "#B32C2C"
+let color2  = "#CC0202"
+let color3  = "#F40301"
+let color4  = "#E62D1B"
+let color5  = "#E65930"
+let color6  = "#F7B242"
+let color7  = "#ddd2cb"
+let color8  = "#9a938e"
+let color9  = "#B32C2C"
+let color10 = "#CC0202"
+let color11 = "#F40301"
+let color12 = "#E62D1B"
+let color13 = "#E65930"
+let color14 = "#F7B242"
+let color15 = "#ddd2cb"

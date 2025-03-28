@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Apply wallpaper using wal
-wal -i ~/.wallpaper
+wal -i ~/Configs/Wallpaper
 
 # Run status bar
-polybar --config=~/Configs/polybar/config.ini &
+polybar --config=~/Configs/configs/polybar/config.ini -r laptop &
 
 # Run automount daemon
 udiskie &

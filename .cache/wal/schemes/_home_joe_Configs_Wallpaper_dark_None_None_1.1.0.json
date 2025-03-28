@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/joe/Configs/Wallpaper",
+    "alpha": "100",
+    "special": {
+        "background": "#0A0101",
+        "foreground": "#ddd2cb",
+        "cursor": "#ddd2cb"
+    },
+    "colors": {
+        "color0": "#0A0101",
+        "color1": "#B32C2C",
+        "color2": "#CC0202",
+        "color3": "#F40301",
+        "color4": "#E62D1B",
+        "color5": "#E65930",
+        "color6": "#F7B242",
+        "color7": "#ddd2cb",
+        "color8": "#9a938e",
+        "color9": "#B32C2C",
+        "color10": "#CC0202",
+        "color11": "#F40301",
+        "color12": "#E62D1B",
+        "color13": "#E65930",
+        "color14": "#F7B242",
+        "color15": "#ddd2cb"
+    }
+}
