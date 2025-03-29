@@ -1,8 +1,6 @@
 #!/bin/sh
 
-rootdir=$(realpath $0 | xargs dirname)/..
-
-WALL_LOC=$rootdir/Wallpaper
+WALL_LOC=$CFGDIR/Wallpaper
 
 if [ ! -f $1 ]; then
 	echo "File does not exist."
@@ -17,7 +15,7 @@ wal -i $WALL_LOC
 
 betterlockscreen -u $WALL_LOC > /dev/null &
 
-sudo nixos-rebuild switch --flake $rootdir
+sudo nixos-rebuild switch --flake $CFGDIR
 
 pkill dunst
 notify-send -t 3000 "Theme updated."

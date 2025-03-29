@@ -46,8 +46,8 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control", "shift"], "r", lazy.spawn("polybar -r --config=~/Configs/configs/polybar/config.ini"), desc="Reload polybar"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn("sh -c ~/Configs/configs/rofi/launcher.sh"), desc="Launcher"),
-    Key([mod], "p", lazy.spawn("sh -c ~/Configs/configs/rofi/power.sh"), desc="Power menu"),
+    Key([mod], "r", lazy.spawn("sh -c launcher.sh"), desc="Launcher"),
+    Key([mod], "p", lazy.spawn("sh -c power.sh"), desc="Power menu"),
 
 
 # C U S T O M
@@ -159,7 +159,7 @@ import subprocess
 # stuff
 @hook.subscribe.startup_once
 def autostart():
-    subprocess.call(["sh", "Configs/configs/qtile/autostart_once.sh"])
+    subprocess.call(["sh", "/etc/nixos/nixos-config/configs/qtile/autostart_once.sh"])
 
 auto_fullscreen = True
 focus_on_window_activation = "smart"

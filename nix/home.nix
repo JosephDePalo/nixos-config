@@ -25,10 +25,17 @@
       '';
       shellAliases = {
         ls = "eza";
+        vim = "nvim";
       };
       localVariables = {
-        EDITOR = "vim";
+        EDITOR = "nvim";
       };
+    };
+
+    programs.git = {
+      enable = true;
+      userName = "Joseph DePalo";
+      userEmail = "jdepalo@proton.me";
     };
 
     programs.neovim = {
@@ -39,11 +46,10 @@
         nerdtree
       ];
       coc.enable = true;
-      vimAlias = true;
       extraConfig = ''
       	set notermguicolors
 	set ls=0
-        set expandtab
+        set expandtab autoindent tabstop=2 shiftwidth=2
       '';
     };
 
@@ -61,7 +67,7 @@
 
     programs.starship.enable = true;
     programs.zathura.enable = true;
-    programs.zathura.extraConfig = "include ${config.home.homeDirectory}/.cache/wal/zathurarc";
+    programs.zathura.extraConfig = "include ~/.cache/wal/zathurarc";
     programs.ranger = {
       enable = true;
       extraConfig = ''
@@ -80,9 +86,11 @@
       theme = inputs.self + "/.cache/wal/colors-rofi-dark.rasi";
     };
 
-    services.polybar.config = ./configs/polybar/config.ini;
+    services.polybar.config = inputs.self + "/configs/polybar/config.ini";
 
     xdg.configFile."qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
+
+    home.file.".config/wal/templates".source = inputs.self + "/configs/wal/templates";
 
     programs.vscode = {
       enable = true;
@@ -94,7 +102,6 @@
             github.copilot
             github.copilot-chat
             vscodevim.vim
-#            dlasagno.wal-theme
           ];
     };
     gtk = {

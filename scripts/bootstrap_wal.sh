@@ -1,9 +1,4 @@
 #!/bin/sh
-
-rootdir=$(realpath $0 | xargs dirname)/..
-wallpaper=$rootdir/Wallpaper
-
-cp -r $rootdir/configs/wal/templates ~/.config/wal/
-mkdir -p $rootdir/.cache/wal 2> /dev/null
-wal -i $wallpaper
-cp -r ~/.cache/wal $rootdir/.cache/
+mkdir -p $CFGDIR/.cache/wal 2> /dev/null
+wal -i $CFGDIR/Wallpaper
+cp -r ~/.cache/wal $CFGDIR/.cache/

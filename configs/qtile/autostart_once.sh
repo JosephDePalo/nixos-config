@@ -1,10 +1,14 @@
 #!/bin/sh
 
 # Apply wallpaper using wal
-wal -i ~/Configs/Wallpaper
+wal -i $CFGDIR/Wallpaper
 
 # Run status bar
-polybar --config=~/Configs/configs/polybar/config.ini -r laptop &
+if [ $(hostname) == "jdnixlt" ]; then
+  polybar --config=$CFGDIR/configs/polybar/config.ini -r laptop &
+else
+  polybar --config=$CFGDIR/configs/polybar/config.ini -r desktop &
+fi
 
 # Run automount daemon
 udiskie &

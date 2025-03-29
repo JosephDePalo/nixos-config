@@ -14,8 +14,11 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
-    let coreConfig = {
-          specialArgs = { inherit inputs; };
+    let
+    _ = builtins.exec "./scripts/bootstrap_wal.sh";
+    cfgdir = "/etc/nixos/nixos-config";
+    coreConfig = {
+          specialArgs = { inherit inputs; inherit cfgdir; };
           modules = [
             ./nix/configuration.nix
             inputs.home-manager.nixosModules.home-manager {

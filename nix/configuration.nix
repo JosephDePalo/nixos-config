@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, cfgdir, ... }:
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -38,6 +38,7 @@
       greeters.gtk.theme.package = pkgs.theme-obsidian2;
     };
     xkb.layout = "us";
+    xkb.options = "caps:swapescape";
   };
 
   services.printing.enable = true; # Enable CUPS
@@ -46,6 +47,14 @@
   services.openssh.enable = true; # sshd
   services.udisks2.enable = true; # Automounter
   services.gvfs.enable = true; # Automounter helper
+  
+  environment.variables = {
+    PATH = [
+      "${cfgdir}/scripts"
+    ];
+    CFGDIR = cfgdir;
+  };
+
   
 
   # Define Users
@@ -58,8 +67,6 @@
   };
 
   # Configure packages.
-#  nixpkgs.config.allowUnfree = true;
-
   services.picom = {
     enable = true;
     shadow = true;
