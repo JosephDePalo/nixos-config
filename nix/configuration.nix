@@ -9,7 +9,6 @@
       device = "nodev";
       useOSProber = true;
     };
-    efi.canTouchEfiVariables = true;
   };
 
   # Configure Peripherals & Radios

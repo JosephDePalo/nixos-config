@@ -33,6 +33,12 @@
             ./nix/jdnixlt-hardware.nix
           ];
         });
+        jdnixpc = nixpkgs.lib.nixosSystem (coreConfig // { 
+          modules = coreConfig.modules ++ [
+            ./nix/jdnixpc.nix
+            ./nix/jdnixpc-hardware.nix
+          ];
+        });
       };
     };
 }
