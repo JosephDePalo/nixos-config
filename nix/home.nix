@@ -72,17 +72,17 @@
 
     services.dunst = {
       enable = true;
-      configFile = ./.cache/wal/dunstrc;
+      configFile = inputs.self + "/.cache/wal/dunstrc";
     };
 
     programs.rofi = {
       enable = true;
-      theme = ./.cache/wal/colors-rofi-dark.rasi;
+      theme = inputs.self + "/.cache/wal/colors-rofi-dark.rasi";
     };
 
     services.polybar.config = ./configs/polybar/config.ini;
 
-    xdg.configFile."qtile/config.py".source = ./configs/qtile/config.py;
+    xdg.configFile."qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
 
     programs.vscode = {
       enable = true;
@@ -162,7 +162,6 @@
             "device.sensors.orientation.enabled" =  false;
             "device.sensors.proximity.enabled" =  false;
             "dom.battery.enabled" =  false;
-            "dom.event.clipboardevents.enabled" =  false;
             "dom.private-attribution.submission.enabled" =  false;
             "dom.webaudio.enabled" =  false;
             "experiments.activeExperiment" =  false;
@@ -188,7 +187,6 @@
             "network.cookie.cookieBehavior" =  1;
             "network.dns.disablePrefetch" =  true;
             "network.dns.disablePrefetchFromHTTPS" =  true;
-            "network.http.referer.spoofSource" =  true;
             "network.http.speculative-parallel-limit" =  0;
             "network.predictor.enable-prefetch" =  false;
             "network.predictor.enabled" =  false;

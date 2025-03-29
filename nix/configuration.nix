@@ -1,26 +1,19 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
 
   boot.loader = {
     grub = {
       enable = true;
       efiSupport = true;
       device = "nodev";
+      useOSProber = true;
     };
     efi.canTouchEfiVariables = true;
   };
 
   # Configure Peripherals & Radios
-  networking = {
-    hostName = "jdnix";
-    networkmanager.enable = true;
-  };
+  networking.networkmanager.enable = true;
 
   time.timeZone = "America/New_York";
 
@@ -40,7 +33,7 @@
     };
     displayManager.lightdm = {
       enable = true;
-      background = ./Wallpaper;
+      background = "${inputs.self}/Wallpaper";
       greeters.gtk.enable = true;
       greeters.gtk.theme.name = "Obsidian-2";
       greeters.gtk.theme.package = pkgs.theme-obsidian2;
@@ -53,7 +46,7 @@
   networking.firewall.enable = true; # Nix Firewall
   services.openssh.enable = true; # sshd
   services.udisks2.enable = true; # Automounter
-  services.gvfs.enable = true;
+  services.gvfs.enable = true; # Automounter helper
   
 
   # Define Users
@@ -66,7 +59,7 @@
   };
 
   # Configure packages.
-  nixpkgs.config.allowUnfree = true;
+#  nixpkgs.config.allowUnfree = true;
 
   services.picom = {
     enable = true;
@@ -97,6 +90,7 @@
     nfs-utils
     libnotify
     feh
+    file
     # UI/UX
     (polybar.override { pulseSupport = true; })
     pywal

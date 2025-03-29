@@ -14,18 +14,25 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
-    {
-      nixosConfigurations = {
-        jdnix = nixpkgs.lib.nixosSystem {
+    let coreConfig = {
+          specialArgs = { inherit inputs; };
           modules = [
-            ./configuration.nix
-
+            ./nix/configuration.nix
             inputs.home-manager.nixosModules.home-manager {
               home-manager.extraSpecialArgs = { inherit inputs; };
-              home-manager.users.joe = import ./home.nix;
+              home-manager.users.joe = import ./nix/home.nix;
             }
           ];
-        };
+    };
+    in
+    {
+      nixosConfigurations = {
+        jdnixlt = nixpkgs.lib.nixosSystem (coreConfig // { 
+          modules = coreConfig.modules ++ [
+            ./nix/jdnixlt.nix
+            ./nix/jdnixlt-hardware.nix
+          ];
+        });
       };
     };
 }
