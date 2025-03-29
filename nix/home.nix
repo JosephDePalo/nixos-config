@@ -67,7 +67,7 @@
 
     programs.starship.enable = true;
     programs.zathura.enable = true;
-    programs.zathura.extraConfig = "include ~/.cache/wal/zathurarc";
+    programs.zathura.extraConfig = "include ${config.home.homeDirectory}/.cache/wal/zathurarc";
     programs.ranger = {
       enable = true;
       extraConfig = ''

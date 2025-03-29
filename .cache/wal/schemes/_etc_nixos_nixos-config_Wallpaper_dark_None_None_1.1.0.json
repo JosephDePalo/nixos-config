@@ -1,7 +1,6 @@
 {
     "wallpaper": "/etc/nixos/nixos-config/Wallpaper",
     "alpha": "100",
-
     "special": {
         "background": "#25243e",
         "foreground": "#e8cac0",

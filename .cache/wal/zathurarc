@@ -1,29 +1,29 @@
 set selection-clipboard clipboard
 
-set default-bg "#0C1419"
-set default-fg "#d8d5bf"
-set inputbar-bg "#0C1419"
-set inputbar-fg "#d8d5bf"
-set statusbar-bg "#0C1419"
-set statusbar-fg "#d8d5bf"
+set default-bg "#25243e"
+set default-fg "#e8cac0"
+set inputbar-bg "#25243e"
+set inputbar-fg "#e8cac0"
+set statusbar-bg "#25243e"
+set statusbar-fg "#e8cac0"
 set statusbar-v-padding 10
 
-set index-bg "#0C1419"
-set index-fg "#d8d5bf"
+set index-bg "#25243e"
+set index-fg "#e8cac0"
 
 set recolor true
-set recolor-darkcolor "#d8d5bf"
-set recolor-lightcolor "#0C1419"
+set recolor-darkcolor "#e8cac0"
+set recolor-lightcolor "#25243e"
 
 set font "JetBrainsMono Nerd Font 15"
-set highlight-active-color "#678E78"
-set highlight-color "#678E78"
-set completion-highlight-bg "#678E78"
+set highlight-active-color "#9C738F"
+set highlight-color "#9C738F"
+set completion-highlight-bg "#9C738F"
 
-set notification-bg "#9E5531"
-set notification-fg "#d8d5bf"
-set highlight-fg "#d8d5bf"
-set index-active-bg "#678E78"
-set index-active-fg "#d8d5bf"
+set notification-bg "#435BB1"
+set notification-fg "#e8cac0"
+set highlight-fg "#e8cac0"
+set index-active-bg "#9C738F"
+set index-active-fg "#e8cac0"
 
 

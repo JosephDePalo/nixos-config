@@ -15,6 +15,9 @@ wal -i $WALL_LOC
 
 betterlockscreen -u $WALL_LOC > /dev/null &
 
+mkdir $CFGDIR/.cache 2> /dev/null
+cp -r ~/.cache/wal $CFGDIR/.cache/
+
 sudo nixos-rebuild switch --flake $CFGDIR
 
 pkill dunst
