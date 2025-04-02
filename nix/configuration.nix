@@ -25,8 +25,7 @@
   };
 
   # Core Services
-  services.xserver = {
-    enable = true;
+  services.xserver = { enable = true;
     windowManager.qtile = {
       enable = true;
     };
@@ -47,6 +46,7 @@
   services.openssh.enable = true; # sshd
   services.udisks2.enable = true; # Automounter
   services.gvfs.enable = true; # Automounter helper
+  documentation.man.generateCaches = true;
   
   environment.variables = {
     PATH = [
@@ -83,6 +83,11 @@
   programs.light.enable = true; # Maybe enable brightnessKeys?
   programs.dconf.enable = true;
   programs.zsh.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-curses;
+    enableSSHSupport = true;
+  };
 
   environment.systemPackages = with pkgs; [
     # CLI Uitilities
@@ -97,6 +102,10 @@
     libnotify
     feh
     file
+    pinentry-curses
+    pass
+    man-pages
+    man-pages-posix
     # UI/UX
     (polybar.override { pulseSupport = true; })
     pywal

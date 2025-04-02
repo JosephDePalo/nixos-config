@@ -52,12 +52,12 @@ keys = [
 
 # C U S T O M
 
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume 0 +5%"), desc='Volume Up'),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume 0 -5%"), desc='volume down'),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pulsemixer --change-volume +5"), desc='Volume Up'),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pulsemixer --change-volume -5"), desc='volume down'),
     Key([], "XF86AudioMute", lazy.spawn("pulsemixer --toggle-mute"), desc='Volume Mute'),
-    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause"), desc='playerctl'),
-    Key([], "XF86AudioPrev", lazy.spawn("playerctl previous"), desc='playerctl'),
-    Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc='playerctl'),
+    Key([], "XF86AudioPlay", lazy.spawn(""), desc='playerctl'),
+    Key([], "XF86AudioPrev", lazy.spawn(""), desc='playerctl'),
+    Key([], "XF86AudioNext", lazy.spawn(""), desc='playerctl'),
     Key([], "XF86MonBrightnessUp", lazy.spawn("light -A 10"), desc='brightness UP'),
     Key([], "XF86MonBrightnessDown", lazy.spawn("light -U 10"), desc='brightness Down'),
     Key([mod],"e", lazy.spawn(f"{terminal} -e ranger"), desc='File Manager'),

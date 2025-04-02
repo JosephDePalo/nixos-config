@@ -14,6 +14,8 @@
       flameshot
       pywalfox-native
       dconf
+      fzf
+      zoxide
     ];
     programs.zsh = {
       enable = true;
@@ -22,10 +24,24 @@
       syntaxHighlighting.enable = true;
       initExtra = ''
         set -o vi
+        eval "$(zoxide init zsh)"
+        function calc { python -c "print($1)" }
+        function srch {
+          if [ -v 1 ]; then
+            name=$(fzf -e --walker-root $1 --preview='bat --color=always {}')
+          else
+            name=$(fzf -e --preview='bat --color=always {}') 
+          fi
+          [[ ! -z "$name" ]] && $EDITOR $name
+        }
       '';
       shellAliases = {
-        ls = "eza";
-        vim = "nvim";
+        ls = "eza --hyperlink";
+        vim = "$EDITOR";
+        confs = "srch $CFGDIR";
+        build = "sudo nixos-rebuild switch --flake $CFGDIR#jdnixlt";
+        try = "nix-shell -p";
+        wttr = "curl https://wttr.in";
       };
       localVariables = {
         EDITOR = "nvim";
@@ -43,12 +59,12 @@
       plugins = with pkgs.vimPlugins; [
         vim-surround
         syntastic
-        nerdtree
+        auto-pairs
       ];
       coc.enable = true;
       extraConfig = ''
       	set notermguicolors
-	set ls=0
+	      set ls=0
         set expandtab autoindent tabstop=2 shiftwidth=2
       '';
     };
@@ -59,9 +75,14 @@
       extraConfig = ''
         include ~/.cache/wal/colors-kitty.conf
         background_opacity 0.95
+        editor nvim
       '';
       settings = {
         enable_audio_bell = false;
+        window_margin_width = 6;
+      };
+      keybindings = {
+        "f1" = "launch --type=tab --cwd=current";
       };
     };
 
@@ -91,18 +112,24 @@
     xdg.configFile."qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
 
     home.file.".config/wal/templates".source = inputs.self + "/configs/wal/templates";
+    home.file.".config/kitty/open-actions.conf".source = inputs.self + "/configs/kitty/open-actions.conf";
 
     programs.vscode = {
       enable = true;
-          extensions = with pkgs.vscode-extensions; [
-            ms-vscode-remote.remote-ssh
-            ms-python.python
-            ms-python.pylint
-            ms-python.debugpy
-            github.copilot
-            github.copilot-chat
-            vscodevim.vim
-          ];
+      extensions = with pkgs.vscode-extensions; [
+        ms-vscode-remote.remote-ssh
+        ms-python.python
+        ms-python.pylint
+        ms-python.debugpy
+        github.copilot
+        github.copilot-chat
+        vscodevim.vim
+      ];
+      userSettings = {
+        "keyboard.dispatch" = "keyCode";
+        "vim.useCtrlKeys" = false;
+        "workbench.colorTheme" = "Wal";
+      };
     };
     gtk = {
       enable = true;
@@ -113,6 +140,10 @@
     programs.firefox = {
       enable = true;
       profiles = {
+        clean = {
+          id = 1;
+          name = "clean";
+        };
         default = {
           id = 0;
           name = "default";
@@ -170,7 +201,6 @@
             "device.sensors.proximity.enabled" =  false;
             "dom.battery.enabled" =  false;
             "dom.private-attribution.submission.enabled" =  false;
-            "dom.webaudio.enabled" =  false;
             "experiments.activeExperiment" =  false;
             "experiments.enabled" =  false;
             "experiments.manifest.uri" =  "";
@@ -181,7 +211,6 @@
             "extensions.shield-recipe-client.api_url" =  "";
             "extensions.shield-recipe-client.enabled" =  false;
             "extensions.webservice.discoverURL" =  "";
-#            "general.useragent.override" =  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:136.0 Gecko/20100101 Firefox/136.";
             "media.autoplay.default" =  0;
             "media.autoplay.enabled" =  true;
             "media.eme.enabled" =  false;
@@ -191,7 +220,6 @@
             "media.video_stats.enabled" =  false;
             "network.allow-experiments" =  false;
             "network.captive-portal-service.enabled" =  false;
-            "network.cookie.cookieBehavior" =  1;
             "network.dns.disablePrefetch" =  true;
             "network.dns.disablePrefetchFromHTTPS" =  true;
             "network.http.speculative-parallel-limit" =  0;
