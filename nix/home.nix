@@ -6,7 +6,6 @@
       keepassxc
       spotify
       obsidian
-      btop
       bat
       eza
       procs
@@ -52,6 +51,20 @@
       enable = true;
       userName = "Joseph DePalo";
       userEmail = "jdepalo@proton.me";
+    };
+
+    programs.btop = {
+      enable = true;
+      settings = {
+        theme_background = false;
+      };
+    };
+
+    services.redshift = {
+      enable = true;
+      latitude = "40.7128";
+      longitude = "74.0060";
+      provider = "manual";
     };
 
     programs.neovim = {
@@ -231,7 +244,6 @@
             "privacy.donottrackheader.value" =  1;
             "privacy.query_stripping" =  true;
             "privacy.trackingprotection.cryptomining.enabled" =  true;
-            "privacy.trackingprotection.enabled" =  true;
             "privacy.trackingprotection.fingerprinting.enabled" =  true;
             "privacy.trackingprotection.pbmode.enabled" =  true;
             "privacy.usercontext.about_newtab_segregation.enabled" =  true;
