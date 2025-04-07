@@ -43,10 +43,10 @@
   services.printing.enable = true; # Enable CUPS
   services.blueman.enable = true; # Bluetooth Manager
   networking.firewall.enable = true; # Nix Firewall
-  services.openssh.enable = true; # sshd
+  # services.openssh.enable = true; # sshd
   services.udisks2.enable = true; # Automounter
   services.gvfs.enable = true; # Automounter helper
-  documentation.man.generateCaches = true;
+  documentation.man.generateCaches = true; # Search Man Pages
   
   environment.variables = {
     PATH = [

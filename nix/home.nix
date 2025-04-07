@@ -3,19 +3,21 @@
     nixpkgs.config.allowUnfree = true;
 
     home.packages = with pkgs; [
-      keepassxc
-      spotify
-      obsidian
-      bat
-      eza
-      procs
-      ripgrep
-      flameshot
-      pywalfox-native
-      dconf
-      fzf
-      zoxide
+      keepassxc # Password Vault
+      spotify # Music
+      obsidian # Notes
+      bat # Better cat
+      eza # Better ls
+      procs # Better ps
+      ripgrep # Better grep
+      flameshot # Screenshot Utility
+      pywalfox-native # Firefox Theme
+      dconf # For GTK theme
+      fzf # Fuzzy Finder
+      zoxide # Better cd
+      nil # Nix Language Server
     ];
+
     programs.zsh = {
       enable = true;
       enableCompletion = true;
@@ -38,7 +40,7 @@
         ls = "eza --hyperlink";
         vim = "$EDITOR";
         confs = "srch $CFGDIR";
-        build = "sudo nixos-rebuild switch --flake $CFGDIR#jdnixlt";
+        build = "sudo nixos-rebuild switch --flake $CFGDIR#$HOST";
         try = "nix-shell -p";
         wttr = "curl https://wttr.in";
       };
@@ -65,7 +67,12 @@
       latitude = "40.7128";
       longitude = "74.0060";
       provider = "manual";
+      dawnTime = "6:00-7:45";
+      duskTime = "18:45-20:30";
+      enableVerboseLogging = true;
     };
+
+
 
     programs.neovim = {
       enable = true;
@@ -73,35 +80,149 @@
         vim-surround
         syntastic
         auto-pairs
+        tabular
+        vim-markdown
+        polyglot
+        nvim-lspconfig 
+        telescope-nvim
+        vim-sleuth
+        which-key-nvim
+        image-nvim
+        vimwiki
+        pywal-nvim
+        lualine-nvim
       ];
       coc.enable = true;
       extraConfig = ''
-      	set notermguicolors
-	      set ls=0
-        set expandtab autoindent tabstop=2 shiftwidth=2
+        colorscheme pywal
+        set conceallevel=3
+        set relativenumber number
+        let mapleader = " "
+        function! ToggleLineNumbers()
+          if &number
+            set nonumber
+          else
+            set number
+          endif
+        endfunction
+
+        function! ToggleRelLineNumbers()
+          if &relativenumber
+            set norelativenumber
+          else
+            set relativenumber
+          endif
+        endfunction
+
+        nnoremap <Space> <Nop>
+        nnoremap <F10> :call ToggleLineNumbers()<CR>
+        nnoremap <F11> :call ToggleRelLineNumbers()<CR>
+        nnoremap <leader>f :Telescope find_files cwd=%:p:h<CR>
+        nnoremap <leader>F :Telescope find_files cwd=
+
+        let g:vimwiki_list = [{'path': '~/Documents/vimwiki', 'syntax': 'markdown', 'ext': '.md'}]
       '';
+      extraLuaConfig = ''
+        lspconfig = require('lspconfig')
+        lspconfig.nil_ls.setup{}
+
+        local project_dir = vim.fn.getcwd()
+        package.path = package.path .. ";" .. project_dir .. "/?.lua"
+        local is_nix_shell = os.getenv("IN_NIX_SHELL") == "1"
+        if is_nix_shell then
+          pcall(require, "nvim_config")
+        end
+        require("image").setup({
+          backend = "kitty",
+          processor = "magick_rock", -- or "magick_cli"
+          integrations = {
+            markdown = {
+              enabled = true,
+              clear_in_insert_mode = false,
+              download_remote_images = true,
+              only_render_image_at_cursor = false,
+              floating_windows = false, -- if true, images will be rendered in floating markdown windows
+              filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
+            },
+            neorg = {
+              enabled = true,
+              filetypes = { "norg" },
+            },
+            typst = {
+              enabled = true,
+              filetypes = { "typst" },
+            },
+            html = {
+              enabled = false,
+            },
+            css = {
+              enabled = false,
+            },
+          },
+          max_width = nil,
+          max_height = nil,
+          max_width_window_percentage = nil,
+          max_height_window_percentage = 50,
+          window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
+          window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "snacks_notif", "scrollview", "scrollview_sign" },
+          editor_only_render_when_focused = false, -- auto show/hide images when the editor gains/looses focus
+          tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+          hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
+        })
+        local lualine = require('lualine')
+
+        lualine.setup {
+          options = {
+            theme = 'pywal-nvim',
+          },
+        }
+      '';
+      extraLuaPackages = ps: [ ps.magick ];
+      extraPackages = [ pkgs.imagemagick ];
     };
 
     programs.kitty = {
       enable = true;
       font.name = "JetBrainsMono";
+      font.size = 12;
       extraConfig = ''
         include ~/.cache/wal/colors-kitty.conf
         background_opacity 0.95
         editor nvim
+        kitty_mod alt
+        enabled_layouts splits, stack, grid
+        layout splits
       '';
       settings = {
         enable_audio_bell = false;
-        window_margin_width = 6;
+        window_margin_width = 1;
+        window_padding_width = 6;
+        dynamic_background_opacity = true;
+        allow_remote_control = true;
+        listen_on = "unix:/tmp/mykitty";
       };
       keybindings = {
         "f1" = "launch --type=tab --cwd=current";
+        "kitty_mod+ctrl+j" = "launch --location=hsplit --cwd=current";
+        "kitty_mod+ctrl+l" = "launch --location=vsplit --cwd=current";
+        "kitty_mod+shift+h" = "resize_window wider";
+        "kitty_mod+shift+l" = "resize_window narrower";
+        "kitty_mod+shift+j" = "resize_window shorter";
+        "kitty_mod+shift+k" = "resize_window taller";
+        "kitty_mod+h" = "neighboring_window left";
+        "kitty_mod+l" = "neighboring_window right";
+        "kitty_mod+j" = "neighboring_window down";
+        "kitty_mod+k" = "neighboring_window up";
+        "kitty_mod+o" = "set_background_opacity +0.05";
+        "kitty_mod+shift+o" = "set_background_opacity -0.05";
       };
     };
 
     programs.starship.enable = true;
-    programs.zathura.enable = true;
-    programs.zathura.extraConfig = "include ${config.home.homeDirectory}/.cache/wal/zathurarc";
+    programs.zathura = {
+      enable = true;
+      extraConfig = "include ${config.home.homeDirectory}/.cache/wal/zathurarc";
+    };
     programs.ranger = {
       enable = true;
       extraConfig = ''
@@ -122,10 +243,11 @@
 
     services.polybar.config = inputs.self + "/configs/polybar/config.ini";
 
-    xdg.configFile."qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
-
-    home.file.".config/wal/templates".source = inputs.self + "/configs/wal/templates";
-    home.file.".config/kitty/open-actions.conf".source = inputs.self + "/configs/kitty/open-actions.conf";
+    xdg.configFile = {
+      "qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
+      "wal/templates".source = inputs.self + "/configs/wal/templates";
+      "kitty/open-actions.conf".source = inputs.self + "/configs/kitty/open-actions.conf";
+    };
 
     programs.vscode = {
       enable = true;

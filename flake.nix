@@ -11,11 +11,11 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs:
     let
-    _ = builtins.exec "./scripts/bootstrap_wal.sh";
     cfgdir = "/etc/nixos/nixos-config";
     coreConfig = {
           specialArgs = { inherit inputs; inherit cfgdir; };
