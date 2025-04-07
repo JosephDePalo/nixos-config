@@ -115,11 +115,32 @@
           endif
         endfunction
 
+        function ObsidianNew()
+          let name = input("Enter a Name: ")
+          :ObsidianNew name
+          :w
+          :ObsidianRename name
+        endfunction
+
         nnoremap <Space> <Nop>
         nnoremap <F10> :call ToggleLineNumbers()<CR>
         nnoremap <F11> :call ToggleRelLineNumbers()<CR>
         nnoremap <leader>f :Telescope find_files cwd=%:p:h<CR>
         nnoremap <leader>F :Telescope find_files cwd=
+        nnoremap <leader>oc :ObsidianToggleCheckbox<CR>
+        nnoremap <leader>onn :call ObsidianNew()<CR>
+        nnoremap <leader>onb :ObsidianBacklinks<CR>
+        nnoremap <leader>onl :ObsidianLinks<CR>
+        nnoremap <leader>onr :ObsidianRename 
+        nnoremap <leader>of :ObsidianQuickSwitch<CR>
+        nnoremap <leader>oF :ObsidianSearch<CR>
+        nnoremap <leader>odl :ObsidianDailies<CR>
+        nnoremap <leader>odt :ObsidianToday<CR>
+        nnoremap <leader>odT :ObsidianTomorrow<CR>
+        nnoremap <leader>op :ObsidianPasteImg<CR>
+        nnoremap <leader>ol :ObsidianLinkNew<CR>
+        vnoremap <leader>ol :ObsidianLinkNew<CR>
+        nnoremap <leader>ow :ObsidianWorkspace<CR>
 
       '';
       extraLuaConfig = ''
@@ -180,12 +201,12 @@
         require("obsidian").setup({
           workspaces = {
             {
-              name = "cybervault",
-              path = "/mnt/Documents/Notes/cybervault",
-            },
-            {
               name = "cyber",
               path = "/mnt/Documents/Notes/cyber",
+            },
+            {
+              name = "cybervault",
+              path = "/mnt/Documents/Notes/cybervault",
             },
           }
         })
@@ -213,9 +234,6 @@
         dynamic_background_opacity = true;
         allow_remote_control = true;
         listen_on = "unix:/tmp/mykitty";
-        scrollback_pager = ''
-          nvimpager
-        '';
       };
       keybindings = {
         "f1" = "launch --type=tab --cwd=current";
