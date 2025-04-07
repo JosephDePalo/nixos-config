@@ -88,15 +88,16 @@
         vim-sleuth
         which-key-nvim
         image-nvim
-        vimwiki
         pywal-nvim
         lualine-nvim
+        plenary-nvim
+        obsidian-nvim
       ];
       coc.enable = true;
       extraConfig = ''
         colorscheme pywal
-        set conceallevel=3
-        set relativenumber number
+        set conceallevel=2
+        set relativenumber number spell
         let mapleader = " "
         function! ToggleLineNumbers()
           if &number
@@ -120,7 +121,6 @@
         nnoremap <leader>f :Telescope find_files cwd=%:p:h<CR>
         nnoremap <leader>F :Telescope find_files cwd=
 
-        let g:vimwiki_list = [{'path': '~/Documents/vimwiki', 'syntax': 'markdown', 'ext': '.md'}]
       '';
       extraLuaConfig = ''
         lspconfig = require('lspconfig')
@@ -176,6 +176,19 @@
             theme = 'pywal-nvim',
           },
         }
+
+        require("obsidian").setup({
+          workspaces = {
+            {
+              name = "cybervault",
+              path = "/mnt/Documents/Notes/cybervault",
+            },
+            {
+              name = "cyber",
+              path = "/mnt/Documents/Notes/cyber",
+            },
+          }
+        })
       '';
       extraLuaPackages = ps: [ ps.magick ];
       extraPackages = [ pkgs.imagemagick ];
@@ -200,6 +213,9 @@
         dynamic_background_opacity = true;
         allow_remote_control = true;
         listen_on = "unix:/tmp/mykitty";
+        scrollback_pager = ''
+          nvimpager
+        '';
       };
       keybindings = {
         "f1" = "launch --type=tab --cwd=current";
@@ -215,6 +231,8 @@
         "kitty_mod+k" = "neighboring_window up";
         "kitty_mod+o" = "set_background_opacity +0.05";
         "kitty_mod+shift+o" = "set_background_opacity -0.05";
+        "kitty_mod+s" = "show_scrollback";
+        "kitty_mod+g" = "kitten kitty_grab/grab.py";
       };
     };
 
@@ -247,6 +265,7 @@
       "qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
       "wal/templates".source = inputs.self + "/configs/wal/templates";
       "kitty/open-actions.conf".source = inputs.self + "/configs/kitty/open-actions.conf";
+      "kitty/kitty_grab".source = inputs.kitty-grab;
     };
 
     programs.vscode = {

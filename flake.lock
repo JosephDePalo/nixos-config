@@ -59,6 +59,22 @@
         "type": "github"
       }
     },
+    "kitty-grab": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1729611136,
+        "narHash": "sha256-WIqIy1I1CyM24EbpmH4s/gcqtoQ/9EVMq38NveBw81c=",
+        "owner": "yurikhan",
+        "repo": "kitty_grab",
+        "rev": "b2a4688e72c6994c28f328452158dbd20462028a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yurikhan",
+        "repo": "kitty_grab",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1743367904,
@@ -95,6 +111,7 @@
       "inputs": {
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager",
+        "kitty-grab": "kitty-grab",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }
