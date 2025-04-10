@@ -89,16 +89,21 @@
         which-key-nvim
         image-nvim
         pywal-nvim
-        lualine-nvim
+        feline-nvim
         plenary-nvim
         obsidian-nvim
+        alpha-nvim
+        lualine-nvim
+        vim-be-good
       ];
       coc.enable = true;
       extraConfig = ''
         colorscheme pywal
         set conceallevel=2
-        set relativenumber number spell
+        set relativenumber number nofoldenable
         let mapleader = " "
+        autocmd FileType markdown setlocal spell
+        autocmd FileType markdown setlocal textwidth=80
         function! ToggleLineNumbers()
           if &number
             set nonumber
@@ -115,11 +120,11 @@
           endif
         endfunction
 
-        function ObsidianNew()
+        function ObsidianNewAndRename()
           let name = input("Enter a Name: ")
-          :ObsidianNew name
-          :w
-          :ObsidianRename name
+          execute 'ObsidianNew ' . name
+          write
+          execute 'ObsidianRename ' . name
         endfunction
 
         nnoremap <Space> <Nop>
@@ -128,7 +133,7 @@
         nnoremap <leader>f :Telescope find_files cwd=%:p:h<CR>
         nnoremap <leader>F :Telescope find_files cwd=
         nnoremap <leader>oc :ObsidianToggleCheckbox<CR>
-        nnoremap <leader>onn :call ObsidianNew()<CR>
+        nnoremap <leader>onn :call ObsidianNewAndRename()<CR>
         nnoremap <leader>onb :ObsidianBacklinks<CR>
         nnoremap <leader>onl :ObsidianLinks<CR>
         nnoremap <leader>onr :ObsidianRename 
@@ -142,8 +147,11 @@
         vnoremap <leader>ol :ObsidianLinkNew<CR>
         nnoremap <leader>ow :ObsidianWorkspace<CR>
 
+        nnoremap <C-d> <C-d>zz
+        nnoremap <C-u> <C-u>zz
       '';
       extraLuaConfig = ''
+        require("alpha").setup(require("alpha.themes.dashboard").config)
         lspconfig = require('lspconfig')
         lspconfig.nil_ls.setup{}
 
@@ -190,26 +198,26 @@
           tmux_show_only_in_active_window = false, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
           hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
         })
-        local lualine = require('lualine')
 
-        lualine.setup {
+        require("lualine").setup({
           options = {
-            theme = 'pywal-nvim',
-          },
-        }
-
-        require("obsidian").setup({
-          workspaces = {
-            {
-              name = "cyber",
-              path = "/mnt/Documents/Notes/cyber",
-            },
-            {
-              name = "cybervault",
-              path = "/mnt/Documents/Notes/cybervault",
-            },
+            theme = "pywal-nvim"
           }
         })
+        vim.keymap.set('n', '<F12>', function()
+          require("obsidian").setup({
+            workspaces = {
+              {
+                name = "cyber",
+                path = "/mnt/Documents/Notes/cyber",
+              },
+              {
+                name = "cybervault",
+                path = "/mnt/Documents/Notes/cybervault",
+              },
+            }
+          })
+        end)
       '';
       extraLuaPackages = ps: [ ps.magick ];
       extraPackages = [ pkgs.imagemagick ];
@@ -251,6 +259,8 @@
         "kitty_mod+shift+o" = "set_background_opacity -0.05";
         "kitty_mod+s" = "show_scrollback";
         "kitty_mod+g" = "kitten kitty_grab/grab.py";
+        "kitty_mod+t" = "launch --type=tab";
+        "kitty_mod+tab" = "next_tab";
       };
     };
 
@@ -281,7 +291,8 @@
 
     xdg.configFile = {
       "qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
-      "wal/templates".source = inputs.self + "/configs/wal/templates";
+      "wal/colorschemes".source = inputs.self + "/configs/wal/colorschemes";
+      "wa/templates".source = inputs.self + "/configs/wal/templates";
       "kitty/open-actions.conf".source = inputs.self + "/configs/kitty/open-actions.conf";
       "kitty/kitty_grab".source = inputs.kitty-grab;
     };
