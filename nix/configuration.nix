@@ -53,6 +53,7 @@
       "${cfgdir}/scripts"
     ];
     CFGDIR = cfgdir;
+    NIXPKGS_ALLOW_INSECURE = 1;
   };
 
   
@@ -91,7 +92,6 @@
 
   environment.systemPackages = with pkgs; [
     # CLI Uitilities
-    vim
     neofetch
     curl
     pulsemixer

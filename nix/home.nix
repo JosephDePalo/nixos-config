@@ -26,7 +26,7 @@
       initExtra = ''
         set -o vi
         eval "$(zoxide init zsh)"
-        function calc { python -c "print($1)" }
+        function calc { python -c "print($*)" }
         function srch {
           if [ -v 1 ]; then
             name=$(fzf -e --walker-root $1 --preview='bat --color=always {}')
@@ -39,10 +39,10 @@
       shellAliases = {
         ls = "eza --hyperlink";
         vim = "$EDITOR";
+        e = "$EDITOR";
         confs = "srch $CFGDIR";
         build = "sudo nixos-rebuild switch --flake $CFGDIR#$HOST";
         try = "nix-shell -p";
-        wttr = "curl https://wttr.in";
       };
       localVariables = {
         EDITOR = "nvim";
@@ -94,7 +94,6 @@
         obsidian-nvim
         alpha-nvim
         lualine-nvim
-        vim-be-good
       ];
       coc.enable = true;
       extraConfig = ''
@@ -158,8 +157,9 @@
         local project_dir = vim.fn.getcwd()
         package.path = package.path .. ";" .. project_dir .. "/?.lua"
         local is_nix_shell = os.getenv("IN_NIX_SHELL") == "1"
+        local nvim_config_path = os.getenv("NVIM_CONFIG_PATH")
         if is_nix_shell then
-          pcall(require, "nvim_config")
+          pcall(dofile, nvim_config_path)
         end
         require("image").setup({
           backend = "kitty",
@@ -209,11 +209,11 @@
             workspaces = {
               {
                 name = "cyber",
-                path = "/mnt/Documents/Notes/cyber",
+                path = "/mnt/nas/Documents/Notes/cyber",
               },
               {
                 name = "cybervault",
-                path = "/mnt/Documents/Notes/cybervault",
+                path = "/mnt/nas/Documents/Notes/cybervault",
               },
             }
           })
@@ -226,7 +226,7 @@
     programs.kitty = {
       enable = true;
       font.name = "JetBrainsMono";
-      font.size = 12;
+      font.size = 18;
       extraConfig = ''
         include ~/.cache/wal/colors-kitty.conf
         background_opacity 0.95
@@ -292,7 +292,7 @@
     xdg.configFile = {
       "qtile/config.py".source = inputs.self + "/configs/qtile/config.py";
       "wal/colorschemes".source = inputs.self + "/configs/wal/colorschemes";
-      "wa/templates".source = inputs.self + "/configs/wal/templates";
+      "wal/templates".source = inputs.self + "/configs/wal/templates";
       "kitty/open-actions.conf".source = inputs.self + "/configs/kitty/open-actions.conf";
       "kitty/kitty_grab".source = inputs.kitty-grab;
     };
@@ -318,6 +318,39 @@
       enable = true;
       theme.package = pkgs.theme-obsidian2;
       theme.name = "Obsidian-2";
+    };
+
+    programs.newsboat = {
+      enable = false;
+      urls = [
+        {
+          url = "https://lobste.rs/rss";
+          tags = [];
+        }
+        {
+          url = "https://www.youtube.com/feeds/videos.xml?channel_id=UC7YOGHUfC1Tb6E4pudI9STA";
+          tags = [];
+        }
+      ];
+      extraConfig = ''
+        color background          white   black
+        color listnormal          white   black
+        color listfocus           white   blue   bold
+        color listnormal_unread   green   black  bold
+        color listfocus_unread    green   blue   bold
+        color title               white   blue   bold
+        color info                white   blue   bold
+        color hint-key            white   blue   bold
+        color hint-keys-delimiter white   blue
+        color hint-separator      white   blue   bold
+        color hint-description    white   blue
+        color article             white   black
+      '';
+    };
+
+    programs.mpv = {
+      enable = true;
+
     };
 
     programs.firefox = {

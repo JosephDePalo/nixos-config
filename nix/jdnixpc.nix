@@ -28,9 +28,9 @@ in
   imports = [ "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/ollama.nix" ]; 
 
   nixpkgs.config.cudaSupport = true;
-  services.ollama = {
-    package = unstablepkgs.ollama;
-    enable = true;
-    acceleration = "cuda";
-  };
+#  services.ollama = {
+#    package = unstablepkgs.ollama;
+#    enable = true;
+#    acceleration = "cuda";
+#  };
 }

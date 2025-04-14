@@ -5,6 +5,8 @@ from libqtile.utils import guess_terminal
 from libqtile.dgroups import simple_key_binder
 from time import sleep
 from libqtile import qtile
+import os
+import subprocess
 
 mod = "mod4"
 terminal = "kitty"
@@ -106,13 +108,23 @@ mouse = [
 
 # L A Y O U T S
 
+colors_path = os.path.expanduser("~/.cache/wal/colors")
 
+width = 0
+border_normal_col ="#ffffff" 
+border_focus_col= "#ffffff"
 
+# if os.path.exists(colors_path):
+#     width = 3
+#     border_normal_col = subprocess.check_output(f'awk \'NR==4\' {colors_path}', shell=True).decode("utf-8").strip()
+#     border_focus_col = subprocess.check_output(f'awk \'NR==3\' {colors_path}', shell=True).decode("utf-8").strip()
+
+os.system(f"echo {width} {border_normal_col} {border_focus_col} > /home/joe/qtile.out")
 lay_config = {
-    "border_width": 0,
+    "border_width": width,
     "margin": 15,
-    "border_focus": "3b4252",
-    "border_normal": "3b4252",
+    "border_focus": border_focus_col,
+    "border_normal": border_normal_col,
     "font": "JetBrainsMono Nerd Font 12",
     "grow_amount": 2,
 }
@@ -154,8 +166,6 @@ floating_layout = layout.Floating(
 
 
 
-import os
-import subprocess
 # stuff
 @hook.subscribe.startup_once
 def autostart():

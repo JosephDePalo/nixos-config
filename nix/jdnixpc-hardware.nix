@@ -26,6 +26,18 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
+  fileSystems."/mnt/nas" = 
+    { device = "10.0.0.10:/mnt/main/storage";
+      fsType = "nfs";
+      options = [
+        "timeo=50"
+        "retrans=2"
+        "bg"
+        "x-systemd.automount"
+        "noauto"
+      ];
+    };
+
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
