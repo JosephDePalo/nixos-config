@@ -1,6 +1,12 @@
-{ config, lib, pkgs, inputs, cfgdir, ... }:
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  config,
+  lib,
+  pkgs,
+  inputs,
+  cfgdir,
+  ...
+}: {
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   boot.loader = {
     grub = {
@@ -10,6 +16,8 @@
       useOSProber = true;
     };
   };
+
+  boot.tmp.cleanOnBoot = true;
 
   # Configure Peripherals & Radios
   networking.networkmanager.enable = true;
@@ -25,7 +33,8 @@
   };
 
   # Core Services
-  services.xserver = { enable = true;
+  services.xserver = {
+    enable = true;
     windowManager.qtile = {
       enable = true;
     };
@@ -47,7 +56,7 @@
   services.udisks2.enable = true; # Automounter
   services.gvfs.enable = true; # Automounter helper
   documentation.man.generateCaches = true; # Search Man Pages
-  
+
   environment.variables = {
     PATH = [
       "${cfgdir}/scripts"
@@ -56,12 +65,10 @@
     NIXPKGS_ALLOW_INSECURE = 1;
   };
 
-  
-
   # Define Users
   users.users.joe = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "video" "networkmanager" ];
+    extraGroups = ["wheel" "audio" "video" "networkmanager" "docker"];
     ignoreShellProgramCheck = true;
     shell = pkgs.zsh;
     initialPassword = "password";
@@ -75,7 +82,7 @@
       "class_g = 'Polybar'"
     ];
     fade = true;
-    fadeSteps = [ 0.04 0.04 ];
+    fadeSteps = [0.04 0.04];
     settings = {
       corner-radius = 15.0;
     };
@@ -89,6 +96,7 @@
     pinentryPackage = pkgs.pinentry-curses;
     enableSSHSupport = true;
   };
+  virtualisation.docker.enable = true;
 
   environment.systemPackages = with pkgs; [
     # CLI Uitilities
@@ -107,7 +115,7 @@
     man-pages
     man-pages-posix
     # UI/UX
-    (polybar.override { pulseSupport = true; })
+    (polybar.override {pulseSupport = true;})
     pywal
     rofi
     theme-obsidian2
@@ -120,11 +128,9 @@
   ];
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-  ];  
+    (nerdfonts.override {fonts = ["JetBrainsMono"];})
+  ];
 
   # Miscellaneous
   system.stateVersion = "24.11"; # DO NOT MODIFY
-
 }
-
