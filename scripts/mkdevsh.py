@@ -32,7 +32,9 @@ pkgs.mkShell {{
 
 
 def main():
-    args = argparse.ArgumentParser(prog="mkdevsh")
+    args = argparse.ArgumentParser(
+        prog="mkdevsh",
+        epilog="Example: mkdevsh.py -f \"python = {'black'}\" -s pyright -d pynet pyright black python312Packages.scapy")
     args.add_argument("-f", "--formatter_str", required=True)
     args.add_argument("-s", "--language_server", required=True)
     args.add_argument("pkgs", nargs="*")

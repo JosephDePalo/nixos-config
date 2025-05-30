@@ -65,10 +65,12 @@
     NIXPKGS_ALLOW_INSECURE = 1;
   };
 
+  environment.etc.hosts.mode = "0644";
+
   # Define Users
   users.users.joe = {
     isNormalUser = true;
-    extraGroups = ["wheel" "audio" "video" "networkmanager" "docker"];
+    extraGroups = ["wheel" "audio" "video" "networkmanager"];
     ignoreShellProgramCheck = true;
     shell = pkgs.zsh;
     initialPassword = "password";
@@ -96,7 +98,7 @@
     pinentryPackage = pkgs.pinentry-curses;
     enableSSHSupport = true;
   };
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   environment.systemPackages = with pkgs; [
     # CLI Uitilities

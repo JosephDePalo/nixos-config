@@ -21,6 +21,9 @@
     zoxide # Better cd
     nil # Nix Language Server
     alejandra # Nix Formatter
+    tldr # Better usage info
+    virt-viewer # Use QEMU agents
+    tree # Pretty print directory structures
   ];
 
   programs.zsh = {
