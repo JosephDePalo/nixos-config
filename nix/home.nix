@@ -24,6 +24,10 @@
     tldr # Better usage info
     virt-viewer # Use QEMU agents
     tree # Pretty print directory structures
+    jq # JSON parser
+    awscli2 # Cloud tool
+    python312Packages.ptpython # Better Python REPL
+    python312Packages.requests # HTTP Requests in Python
   ];
 
   programs.zsh = {

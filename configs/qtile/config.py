@@ -65,6 +65,9 @@ keys = [
     Key([mod],"e", lazy.spawn(f"{terminal} -e ranger"), desc='File Manager'),
     Key([mod], "s", lazy.spawn("flameshot gui"), desc='Screenshot'),
     Key([mod], "w", lazy.spawn(browser), desc='Browser'),
+    Key([mod], "period", lazy.next_screen(), desc='Move focus to next monitor'),
+    Key([mod], "comma", lazy.previous_screen(), desc='Move focus to previous monitor'),
+
 ]
 
 
