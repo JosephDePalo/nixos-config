@@ -8,6 +8,7 @@
 
   # Packages (user-level apps)
   home.packages = with pkgs; [
+    upower
     libnotify
     hyprlock
     bat
@@ -310,5 +311,9 @@
         };
       };
     };
+  };
+  home.file.".local/bin/battery-watch" = {
+    source = ./scripts/battery-watch.sh;
+    executable = true;
   };
 }
