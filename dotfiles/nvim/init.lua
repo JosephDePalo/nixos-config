@@ -1,0 +1,5 @@
+require("config.options")
+require("config.plugins")
+require("config.appearance")
+require("config.keybinds")
+require("config.misc")

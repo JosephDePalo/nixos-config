@@ -1,0 +1,12 @@
+-- Plugins are installed by nix; this file loads their configurations.
+require("plugins.gruvbox")
+require("plugins.web-devicons")
+require("plugins.bufferline")
+require("plugins.tree")
+require("plugins.cmp")
+require("plugins.conform")
+require("plugins.gitsigns")
+require("plugins.treesitter")
+require("plugins.autopairs")
+require("plugins.which-key")
+require("plugins.lspconfig")
