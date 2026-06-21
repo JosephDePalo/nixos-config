@@ -14,13 +14,10 @@
   };
 
   outputs = { nixpkgs, home-manager, ... } @ inputs:
-  let
-    system = "x86_64-linux";
-  in {
+  {
     nixosConfigurations.jdnix = nixpkgs.lib.nixosSystem {
-      inherit system;
-
       modules = [
+        { nixpkgs.hostPlatform = "x86_64-linux"; }
         ./configuration.nix
 	home-manager.nixosModules.home-manager
           {

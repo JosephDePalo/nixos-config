@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+bindkey -e
+eval "$(zoxide init zsh)"
+
+autoload -Uz colors && colors
+setopt PROMPT_SUBST
+PROMPT='%F{cyan}%n%f@%F{blue}%m%f:%F{yellow}%~%f %# '
+
+function calc { python -c "print($*)" }
+function srch {
+  if [ -v 1 ]; then
+    name=$(fzf -e --walker-root $1 --preview='bat --color=always {}')
+  else
+    name=$(fzf -e --preview='bat --color=always {}')
+  fi
+  [[ ! -z "$name" ]] && $EDITOR $name
+}
+function update_nixos_remote () {
+	incus file pull jdserv:$1/etc/nixos/configuration.nix ./$1-configuration.nix
+	$EDITOR ./$1-configuration.nix && \
+  incus file push ./$1-configuration.nix jdserv:$1/etc/nixos/configuration.nix && \
+  rm ./$1-configuration.nix && \
+  incus exec jdserv:$1 -- bash -lc "nixos-rebuild switch"
+}
+
+source <(incus completion zsh)
